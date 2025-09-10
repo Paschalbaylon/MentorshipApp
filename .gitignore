@@ -1,0 +1,15 @@
+# ===== FRONTEND (React/Vue) =====
+DSA FronEnd/node_modules
+DSA FronEnd/dist
+
+# ===== BACKEND (ASP.NET Core / C#) =====
+DSA Project/bin/
+DSA Project/obj/
+DSA Project/appsettings.Development.json
+
+# ===== Logs =====
+*.log
+
+# ===== System files =====
+.DS_Store
+Thumbs.db
