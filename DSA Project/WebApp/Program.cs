@@ -12,7 +12,7 @@ using WebApp.Util;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.UseUrls("http://localhost:5116");
+builder.WebHost.UseUrls("http://0.0.0.0:8080");
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
