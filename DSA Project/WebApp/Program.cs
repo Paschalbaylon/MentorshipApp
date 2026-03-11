@@ -46,7 +46,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "https://your-frontend-url.onrender.com") // React dev server // React dev server
+        policy.WithOrigins("http://localhost:5173", "https://mentorship-frontend-zkvn.onrender.com") // React dev server // React dev server
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
