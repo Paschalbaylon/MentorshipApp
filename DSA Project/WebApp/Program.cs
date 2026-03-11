@@ -140,4 +140,11 @@ app.UseCors("AllowFrontend");
 app.UseAuthorization();
 app.MapControllers();
 
+// Auto-run migrations on startup
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<SiteDbContext>();
+    db.Database.Migrate();
+}
+
 app.Run();
