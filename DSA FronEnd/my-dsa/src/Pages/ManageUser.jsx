@@ -1,16 +1,11 @@
-import { admin } from "../api/auth";
+import { admin, getUserById } from "../api/auth";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { getUserById } from "../api/auth"; // ✅ make sure this exists
-
-const API_BASE = "http://localhost:5116/api/auth";
-const ADMIN_API_BASE = "http://localhost:5116/admin";
+import axiosInstance from "../api/axiosInstance";
 
 const ManageUser = () => {
   const [users, setUsers] = useState([]);
   const [stats, setStats] = useState({ admin: 0, mentor: 0, mentee: 0 });
   const [message, setMessage] = useState("");
-
   const [newUser, setNewUser] = useState({
     FullName: "",
     Email: "",
@@ -20,7 +15,6 @@ const ManageUser = () => {
     Password: "",
     Role: "",
   });
-
   const [otherId, setOtherId] = useState("");
   const [otherProfile, setOtherProfile] = useState(null);
 
@@ -30,7 +24,6 @@ const ManageUser = () => {
       const data = await admin(token);
       setUsers(data);
 
-      // Count roles
       const roleCounts = data.reduce(
         (acc, user) => {
           const role = user.role?.toLowerCase();
@@ -41,7 +34,6 @@ const ManageUser = () => {
         },
         { admin: 0, mentor: 0, mentee: 0 }
       );
-
       setStats(roleCounts);
     } catch (error) {
       console.error("Error fetching admin data:", error);
@@ -55,22 +47,13 @@ const ManageUser = () => {
 
   const onUpdate = async (user) => {
     const role = window.prompt("Enter your Role: ", user.role);
-
     if (!role) {
       setMessage("Role is required ❌");
       return;
     }
-
     try {
-      const token = localStorage.getItem("token");
-      await axios.put(
-        `${ADMIN_API_BASE}/User/${user.id}/role`,
-        { role },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setMessage("User role updated successfully ✅");
+      await axiosInstance.put(`/admin/User/${user.id}/role`, { role });
+      setMessage("User role updated successfully ");
       await fetchUsers();
     } catch (error) {
       console.error("Error updating user:", error);
@@ -80,33 +63,19 @@ const ManageUser = () => {
 
   const onCreate = async () => {
     if (
-      !newUser.FullName ||
-      !newUser.Email ||
-      !newUser.Bio ||
-      !newUser.Skill ||
-      !newUser.Availability ||
-      !newUser.Password ||
-      !newUser.Role
+      !newUser.FullName || !newUser.Email || !newUser.Bio ||
+      !newUser.Skill || !newUser.Availability || !newUser.Password || !newUser.Role
     ) {
       setMessage("All fields are required ❌");
       return;
     }
-
     try {
-      const token = localStorage.getItem("token");
-      await axios.post(`${API_BASE}/Create-User`, newUser, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axiosInstance.post("/auth/Create-User", newUser);
       setNewUser({
-        FullName: "",
-        Email: "",
-        Bio: "",
-        Skill: "",
-        Availability: "",
-        Password: "",
-        Role: "Mentee",
+        FullName: "", Email: "", Bio: "", Skill: "",
+        Availability: "", Password: "", Role: "Mentee",
       });
-      setMessage("User created successfully ✅");
+      setMessage("User created successfully ");
       await fetchUsers();
     } catch (error) {
       console.error("Error creating user:", error);
@@ -116,15 +85,14 @@ const ManageUser = () => {
 
   const fetchOtherProfile = async (idParam) => {
     try {
-      const id = idParam ?? Number(otherId); // use passed id or manual input
+      const id = idParam ?? Number(otherId);
       if (!id || isNaN(id)) {
         setMessage("Invalid ID ❌");
         return;
       }
-
       const response = await getUserById(id);
       setOtherProfile(response);
-      setMessage("Profile fetched successfully ✅");
+      setMessage("Profile fetched successfully ");
     } catch (err) {
       console.error("Failed to fetch other profile", err);
       setMessage("Failed to fetch profile ❌");

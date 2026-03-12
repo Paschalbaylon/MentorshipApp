@@ -37,14 +37,16 @@ const ConfigurePlatform = () => {
 
   if (!profile) {
     return (
-      <div className="p-4 max-w-4xl mx-auto">
-        {profileError ? (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-            {profileError}
-          </div>
-        ) : (
-          <p>Loading profile...</p>
-        )}
+      <div className="min-h-screen bg-gradient-to-r from-teal-400 via-blue-500 to-indigo-600 p-4">
+        <div className="max-w-4xl mx-auto">
+          {profileError ? (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+              {profileError}
+            </div>
+          ) : (
+            <p className="text-white">Loading profile...</p>
+          )}
+        </div>
       </div>
     );
   }
@@ -94,366 +96,193 @@ const ConfigurePlatform = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-teal-400 via-blue-500 to-indigo-600">
-      <div className="p-4 max-w-4xl mx-auto space-y-6 hidden md:block md:h-screen">
-        <h1 className="text-2xl font-bold">Users & Profiles</h1>
+    <div className="min-h-screen bg-gradient-to-r from-teal-400 via-blue-500 to-indigo-600 py-6">
+      <div className="container mx-auto px-4 max-w-6xl">
+        <h1 className="text-2xl md:text-3xl font-bold text-white mb-6">Users & Profiles</h1>
 
-        {/* Current User Profile */}
-        <div className="md:flex md:justify-between space-x-4">
-          <div className="border p-4 -mt-2 mb-2 md:-mt-3 md:mb-0 rounded-lg bg-gray-100 w-[420px] md:w-[420px]">
-            <h2 className="text-xl font-bold">My Profile</h2>
-            <p>
-              <strong>User Id: </strong>
-              <span className="font-semibold text-green-700">{profile.id}</span>
-            </p>
-            <p>
-              <strong>Fullname: </strong>
-              <span className="font-semibold text-green-700">
-                {profile.fullName}
-              </span>
-            </p>
-            <p>
-              <strong>Email: </strong>
-              <span className="font-semibold text-green-700">
-                {profile.email}
-              </span>
-            </p>
-            <p>
-              <strong>Role: </strong>
-              <span className="font-semibold text-green-700">
-                {profile.role}
-              </span>
-            </p>
-            <p>
-              <strong>Bio: </strong>
-              <span className="font-semibold text-green-700">
-                {profile.bio || "N/A"}
-              </span>
-            </p>
-            <p>
-              <strong>Skills: </strong>
-              <span className="font-semibold text-green-700">
-                {profile.skill || "N/A"}
-              </span>
-            </p>
-            <p>
-              <strong>Availability: </strong>
-              <span className="font-semibold text-green-700">
-                {profile.availability || "N/A"}
-              </span>
-            </p>
+        {/* Main Content - Responsive Grid */}
+        <div className="space-y-6">
+          {/* First Row - My Profile and Edit Form */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Current User Profile */}
+            <div className="border p-6 rounded-lg bg-gray-100">
+              <h2 className="text-xl font-bold mb-4">My Profile</h2>
+              <div className="space-y-2">
+                <p>
+                  <strong>User Id: </strong>
+                  <span className="font-semibold text-green-700">{profile.id}</span>
+                </p>
+                <p>
+                  <strong>Fullname: </strong>
+                  <span className="font-semibold text-green-700">
+                    {profile.fullName}
+                  </span>
+                </p>
+                <p>
+                  <strong>Email: </strong>
+                  <span className="font-semibold text-green-700">
+                    {profile.email}
+                  </span>
+                </p>
+                <p>
+                  <strong>Role: </strong>
+                  <span className="font-semibold text-green-700">
+                    {profile.role}
+                  </span>
+                </p>
+                <p>
+                  <strong>Bio: </strong>
+                  <span className="font-semibold text-green-700">
+                    {profile.bio || "N/A"}
+                  </span>
+                </p>
+                <p>
+                  <strong>Skills: </strong>
+                  <span className="font-semibold text-green-700">
+                    {profile.skill || "N/A"}
+                  </span>
+                </p>
+                <p>
+                  <strong>Availability: </strong>
+                  <span className="font-semibold text-green-700">
+                    {profile.availability || "N/A"}
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            {/* Edit Profile */}
+            <form
+              onSubmit={handleUpdateProfile}
+              className="border p-6 rounded-lg bg-white"
+            >
+              <h2 className="text-xl font-semibold mb-4">Edit My Profile</h2>
+              
+              {/* Update Success Message */}
+              {updateSuccess && (
+                <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                  {updateSuccess}
+                </div>
+              )}
+              
+              {/* Update Error Message */}
+              {updateError && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                  {updateError}
+                </div>
+              )}
+              
+              <div className="space-y-4">
+                <input
+                  type="text"
+                  placeholder="Bio"
+                  value={editForm.bio}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, bio: e.target.value })
+                  }
+                  className="border p-3 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <input
+                  type="text"
+                  placeholder="Skills"
+                  value={editForm.skill}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, skill: e.target.value })
+                  }
+                  className="border p-3 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                  type="submit"
+                  className="bg-blue-800 text-white px-6 py-3 rounded cursor-pointer hover:bg-blue-700 transition-colors w-full md:w-auto"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
           </div>
 
-          {/* Edit Profile */}
-          <form
-            onSubmit={handleUpdateProfile}
-            className="space-y-3 border md:w-[400px] p-4 rounded-lg w-[420px]"
-          >
-            <h2 className="text-xl font-semibold">Edit My Profile</h2>
-            
-            {/* Update Success Message */}
-            {updateSuccess && (
-              <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded text-sm">
-                {updateSuccess}
-              </div>
-            )}
-            
-            {/* Update Error Message */}
-            {updateError && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded text-sm">
-                {updateError}
-              </div>
-            )}
-            
-            <input
-              type="text"
-              placeholder="Bio"
-              value={editForm.bio}
-              onChange={(e) =>
-                setEditForm({ ...editForm, bio: e.target.value })
-              }
-              className="border p-2 w-full rounded text-amber-100"
-            />
-            <input
-              type="text"
-              placeholder="Skills"
-              value={editForm.skill}
-              onChange={(e) =>
-                setEditForm({ ...editForm, skill: e.target.value })
-              }
-              className="border p-2 w-full rounded text-amber-100"
-            />
-            <button
-              type="submit"
-              className="bg-blue-800 text-white px-4 py-2 mt-3 rounded cursor-pointer"
-            >
-              Save
-            </button>
-          </form>
-        </div>
-
-        {/* Search Another User */}
-        <div className="md:flex md:justify-between md:-mt-3 md:p-4 space-x-4">
-          <div className="border p-4 rounded-lg w-[420px] md:w-[400px]">
-            <div className="mt-0 md:mt-6">
-              <h2 className="text-xl font-semibold">Find Another User</h2>
+          {/* Second Row - Search and Other Profile */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Search Another User */}
+            <div className="border p-6 rounded-lg bg-white">
+              <h2 className="text-xl font-semibold mb-4">Find Another User</h2>
               
               {/* Search Error Message */}
               {searchError && (
-                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded text-sm mb-2">
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
                   {searchError}
                 </div>
               )}
               
-              <input
-                type="text"
-                placeholder="Enter User ID"
-                value={otherId}
-                onChange={(e) => setOtherId(e.target.value)}
-                className="border p-2 w-full rounded mb-2 md:mt-4 font-bold"
-              />
-              <button
-                onClick={fetchOtherProfile}
-                className="bg-blue-800 text-white px-4 py-2 md:mt-2 rounded cursor-pointer"
-              >
-                Get Profile
-              </button>
+              <div className="space-y-4">
+                <input
+                  type="text"
+                  placeholder="Enter User ID"
+                  value={otherId}
+                  onChange={(e) => setOtherId(e.target.value)}
+                  className="border p-3 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                  onClick={fetchOtherProfile}
+                  className="bg-blue-800 text-white px-6 py-3 rounded cursor-pointer hover:bg-blue-700 transition-colors w-full md:w-auto"
+                >
+                  Get Profile
+                </button>
+              </div>
             </div>
-          </div>
 
-          {/* Other User Profile */}
-          <div className="border p-4 w-[420px] rounded-lg bg-gray-100 md:w-[450px] mt-4 md:mt-0">
-            <h2 className="text-xl font-semibold">Other User Profile</h2>
-            {otherProfile ? (
-              <>
-                <p>
-                  <strong>ID:</strong>{" "}
-                  <span className="font-semibold text-blue-700">
-                    {otherProfile.id}
-                  </span>
-                </p>
-                <p>
-                  <strong>Fullname:</strong>{" "}
-                  <span className="font-semibold text-blue-700">
-                    {otherProfile.fullname}
-                  </span>
-                </p>
-                <p>
-                  <strong>Email:</strong>{" "}
-                  <span className="font-semibold text-blue-700">
-                    {otherProfile.email}
-                  </span>
-                </p>
-                <p>
-                  <strong>Role:</strong>{" "}
-                  <span className="font-semibold text-blue-700">
-                    {otherProfile.role}
-                  </span>
-                </p>
-                <p>
-                  <strong>Bio:</strong>{" "}
-                  <span className="font-semibold text-blue-700">
-                    {otherProfile.bio || "N/A"}
-                  </span>
-                </p>
-                <p>
-                  <strong>Skills:</strong>{" "}
-                  <span className="font-semibold text-blue-700">
-                    {otherProfile.skill || "N/A"}
-                  </span>
-                </p>
-                <p>
-                  <strong>Availability:</strong>{" "}
-                  <span className="font-semibold text-blue-700">
-                    {otherProfile.availability || "N/A"}
-                  </span>
-                </p>
-              </>
-            ) : (
-              <p>No profile found.</p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Small Screen */}
-      <div className="p-4 space-y-6 md:hidden block h-[1010px]">
-        <h1 className="text-2xl font-bold">Users & Profiles</h1>
-
-        {/* Current User Profile */}
-        <div className="md:flex md:justify-between space-x-4">
-          <div className="border p-4 -mt-2 mb-2 md:-mt-3 md:mb-0 rounded-lg bg-gray-100 w-[410px]">
-            <h2 className="text-xl font-bold">My Profile</h2>
-            <p>
-              <strong>User Id: </strong>
-              <span className="font-semibold text-green-700">{profile.id}</span>
-            </p>
-            <p>
-              <strong>Fullname: </strong>
-              <span className="font-semibold text-green-700">
-                {profile.fullName}
-              </span>
-            </p>
-            <p>
-              <strong>Email: </strong>
-              <span className="font-semibold text-green-700">
-                {profile.email}
-              </span>
-            </p>
-            <p>
-              <strong>Role: </strong>
-              <span className="font-semibold text-green-700">
-                {profile.role}
-              </span>
-            </p>
-            <p>
-              <strong>Bio: </strong>
-              <span className="font-semibold text-green-700">
-                {profile.bio || "N/A"}
-              </span>
-            </p>
-            <p>
-              <strong>Skills: </strong>
-              <span className="font-semibold text-green-700">
-                {profile.skill || "N/A"}
-              </span>
-            </p>
-            <p>
-              <strong>Availability: </strong>
-              <span className="font-semibold text-green-700">
-                {profile.availability || "N/A"}
-              </span>
-            </p>
-          </div>
-
-          {/* Edit Profile */}
-          <form
-            onSubmit={handleUpdateProfile}
-            className="space-y-3 border md:w-[400px] p-4 rounded-lg w-[410px]"
-          >
-            <h2 className="text-xl font-semibold">Edit My Profile</h2>
-            
-            {/* Update Success Message */}
-            {updateSuccess && (
-              <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded text-sm">
-                {updateSuccess}
-              </div>
-            )}
-            
-            {/* Update Error Message */}
-            {updateError && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded text-sm">
-                {updateError}
-              </div>
-            )}
-            
-            <input
-              type="text"
-              placeholder="Bio"
-              value={editForm.bio}
-              onChange={(e) =>
-                setEditForm({ ...editForm, bio: e.target.value })
-              }
-              className="border p-2 w-full rounded text-amber-100"
-            />
-            <input
-              type="text"
-              placeholder="Skills"
-              value={editForm.skill}
-              onChange={(e) =>
-                setEditForm({ ...editForm, skill: e.target.value })
-              }
-              className="border p-2 w-full rounded text-amber-100"
-            />
-            <button
-              type="submit"
-              className="bg-blue-800 text-white px-4 py-2 mt-3 rounded cursor-pointer"
-            >
-              Save
-            </button>
-          </form>
-        </div>
-
-        {/* Search Another User */}
-        <div className="md:flex md:justify-between md:p-4 space-x-4">
-          <div className="border p-4 rounded-lg w-[410px]">
-            <div className="mt-0 md:mt-6">
-              <h2 className="text-xl font-semibold">Find Another User</h2>
-              
-              {/* Search Error Message */}
-              {searchError && (
-                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded text-sm mb-2">
-                  {searchError}
+            {/* Other User Profile */}
+            <div className="border p-6 rounded-lg bg-gray-100">
+              <h2 className="text-xl font-semibold mb-4">Other User Profile</h2>
+              {otherProfile ? (
+                <div className="space-y-2">
+                  <p>
+                    <strong>ID:</strong>{" "}
+                    <span className="font-semibold text-blue-700">
+                      {otherProfile.id}
+                    </span>
+                  </p>
+                  <p>
+                    <strong>Fullname:</strong>{" "}
+                    <span className="font-semibold text-blue-700">
+                      {otherProfile.fullname}
+                    </span>
+                  </p>
+                  <p>
+                    <strong>Email:</strong>{" "}
+                    <span className="font-semibold text-blue-700">
+                      {otherProfile.email}
+                    </span>
+                  </p>
+                  <p>
+                    <strong>Role:</strong>{" "}
+                    <span className="font-semibold text-blue-700">
+                      {otherProfile.role}
+                    </span>
+                  </p>
+                  <p>
+                    <strong>Bio:</strong>{" "}
+                    <span className="font-semibold text-blue-700">
+                      {otherProfile.bio || "N/A"}
+                    </span>
+                  </p>
+                  <p>
+                    <strong>Skills:</strong>{" "}
+                    <span className="font-semibold text-blue-700">
+                      {otherProfile.skill || "N/A"}
+                    </span>
+                  </p>
+                  <p>
+                    <strong>Availability:</strong>{" "}
+                    <span className="font-semibold text-blue-700">
+                      {otherProfile.availability || "N/A"}
+                    </span>
+                  </p>
                 </div>
+              ) : (
+                <p className="text-gray-600">No profile found. Search for a user above.</p>
               )}
-              
-              <input
-                type="text"
-                placeholder="Enter User ID"
-                value={otherId}
-                onChange={(e) => setOtherId(e.target.value)}
-                className="border p-2 w-full rounded mb-2 md:mt-4 font-bold"
-              />
-              <button
-                onClick={fetchOtherProfile}
-                className="bg-blue-800 text-white px-4 py-2 md:mt-2 rounded cursor-pointer"
-              >
-                Get Profile
-              </button>
             </div>
-          </div>
-
-          {/* Other User Profile */}
-          <div className="border p-4 w-[410px] rounded-lg bg-gray-100 mt-4 md:mt-0">
-            <h2 className="text-xl font-semibold">Other User Profile</h2>
-            {otherProfile ? (
-              <>
-                <p>
-                  <strong>ID:</strong>{" "}
-                  <span className="font-semibold text-blue-700">
-                    {otherProfile.id}
-                  </span>
-                </p>
-                <p>
-                  <strong>Fullname:</strong>{" "}
-                  <span className="font-semibold text-blue-700">
-                    {otherProfile.fullname}
-                  </span>
-                </p>
-                <p>
-                  <strong>Email:</strong>{" "}
-                  <span className="font-semibold text-blue-700">
-                    {otherProfile.email}
-                  </span>
-                </p>
-                <p>
-                  <strong>Role:</strong>{" "}
-                  <span className="font-semibold text-blue-700">
-                    {otherProfile.role}
-                  </span>
-                </p>
-                <p>
-                  <strong>Bio:</strong>{" "}
-                  <span className="font-semibold text-blue-700">
-                    {otherProfile.bio || "N/A"}
-                  </span>
-                </p>
-                <p>
-                  <strong>Skills:</strong>{" "}
-                  <span className="font-semibold text-blue-700">
-                    {otherProfile.skill || "N/A"}
-                  </span>
-                </p>
-                <p>
-                  <strong>Availability:</strong>{" "}
-                  <span className="font-semibold text-blue-700">
-                    {otherProfile.availability || "N/A"}
-                  </span>
-                </p>
-              </>
-            ) : (
-              <p>No profile found.</p>
-            )}
           </div>
         </div>
       </div>

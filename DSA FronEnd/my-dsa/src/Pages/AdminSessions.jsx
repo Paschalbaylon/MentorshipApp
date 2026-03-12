@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 const AdminSessions = () => {
   const [sessions, setSessions] = useState([]);
@@ -9,13 +9,9 @@ const AdminSessions = () => {
   const [menteeId, setMenteeId] = useState("");
   const [selectedSession, setSelectedSession] = useState(null);
 
-  //  Fetch sessions
   const fetchSessions = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:5116/api/sessions", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axiosInstance.get("/sessions");
       setSessions(response.data);
     } catch (err) {
       setError(err.response?.data || "Failed to load sessions");
@@ -24,20 +20,17 @@ const AdminSessions = () => {
     }
   };
 
-  //  Assign mentor to mentee
   const handleAssign = async (sessionId) => {
     try {
-      const token = localStorage.getItem("token");
-      await axios.put(
-        `http://localhost:5116/api/sessions/${sessionId}/assign?mentorId=${mentorId}&menteeId=${menteeId}`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
+      await axiosInstance.put(
+        `/sessions/${sessionId}/assign?mentorId=${mentorId}&menteeId=${menteeId}`,
+        {}
       );
       alert("Mentor assigned successfully!");
       setMentorId("");
       setMenteeId("");
       setSelectedSession(null);
-      fetchSessions(); // refresh
+      fetchSessions();
     } catch (err) {
       alert(err.response?.data || "Failed to assign mentor");
     }
