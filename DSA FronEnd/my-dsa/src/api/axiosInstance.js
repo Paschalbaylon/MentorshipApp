@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://mentorshipapp-m2k1.onrender.com", // 👈 backend URL goes here
+  baseURL: "https://mentorshipapp-m2k1.onrender.com/api",
 });
 
 // Add token to every request automatically
