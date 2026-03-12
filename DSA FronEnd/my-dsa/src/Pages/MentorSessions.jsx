@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 import FeedBack from "./FeedBack";
 
 const MentorSessions = () => {
@@ -9,22 +9,14 @@ const MentorSessions = () => {
 
   const fetchSessions = async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) throw new Error("User not logged in");
-
-      const response = await axios.get(
-        "http://localhost:5116/api/MentorshipSessions/mentor",
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
+      const response = await axiosInstance.get("/MentorshipSessions/mentor");
       setSessions(response.data || []);
-      setError(""); // clear any previous error
+      setError("");
     } catch (err) {
       if (err.response?.status === 404) {
-        // ✅ Gracefully handle "not found" (no sessions yet)
         console.warn("No sessions found for this mentor.");
         setSessions([]);
-        setError(""); // don't show scary error message
+        setError("");
       } else {
         console.error("Error fetching sessions:", err);
         setError(err.response?.data || "Failed to fetch sessions");

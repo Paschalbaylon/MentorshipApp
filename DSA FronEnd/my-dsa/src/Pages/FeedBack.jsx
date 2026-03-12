@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 const FeedBack = ({ sessionId, onSuccess, onError }) => {
   const [rating, setRating] = useState(5);
@@ -13,17 +13,13 @@ const FeedBack = ({ sessionId, onSuccess, onError }) => {
     setError("");
 
     try {
-      const token = localStorage.getItem("token");
-      if (!token) throw new Error("User not logged in");
-
-      await axios.put(
-        `http://localhost:5116/api/MentorshipSessions/${sessionId}/feedback`,
+      await axiosInstance.put(
+        `/MentorshipSessions/${sessionId}/feedback`,
         {
           FeedbackText: feedbackText,
           FeedbackRating: rating,
           FeedbackSubmittedAt: new Date().toISOString(),
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
+        }
       );
 
       if (onSuccess) onSuccess();
@@ -31,7 +27,7 @@ const FeedBack = ({ sessionId, onSuccess, onError }) => {
       setRating(5);
     } catch (err) {
       if (onError) {
-        onError(err); // send error to parent (MenteeSessions)
+        onError(err);
       } else {
         setError(err.response?.data || err.message);
       }

@@ -1,33 +1,22 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import FeedBack from "./FeedBack"; // make sure path is correct
+import axiosInstance from "../api/axiosInstance";
+import FeedBack from "./FeedBack";
 
 const MenteeSessions = () => {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [feedbackError, setFeedbackError] = useState(""); // 👈 new state for feedback errors
+  const [feedbackError, setFeedbackError] = useState("");
 
   const fetchSessions = async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) throw new Error("User not logged in");
-
-      const response = await axios.get(
-        "http://localhost:5116/api/MentorshipSessions/mentee",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
+      const response = await axiosInstance.get("/MentorshipSessions/mentee");
       setSessions(response.data);
-      setError(""); // clear error if successful
+      setError("");
     } catch (err) {
       if (err.response?.status === 404) {
         setSessions([]);
-        setError(
-          "You don’t have any sessions yet. Once your mentor schedules one, it will appear here."
-        );
+        setError("You don't have any sessions yet. Once your mentor schedules one, it will appear here.");
       } else {
         setError("Failed to load sessions. Please try again later.");
       }
