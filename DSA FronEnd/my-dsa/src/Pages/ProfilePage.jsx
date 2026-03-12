@@ -1,8 +1,7 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
-const API_BASE = "http://localhost:5116/api/auth";
+import axiosInstance from "../api/axiosInstance";  
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState({
@@ -17,12 +16,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(`${API_BASE}/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axiosInstance.get("/auth/me"); 
         setProfile(response.data);
       } catch (error) {
         console.error("Failed to fetch profile:", error);
@@ -36,21 +30,10 @@ const ProfilePage = () => {
 
   const handleLogout = async () => {
     const confirmLogout = window.confirm("Are you sure you want to logout?");
-
     if (!confirmLogout) return;
 
-    const token = localStorage.getItem("token");
-
     try {
-      await axios.post(
-        `${API_BASE}/logout`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axiosInstance.post("/auth/logout", {});  
     } catch (error) {
       console.error("Logout failed", error);
     }
