@@ -17,6 +17,7 @@ const SignUpPage = () => {
 
   const [Errors, setErrors] = useState({});
   const [Submitting, setSubmitting] = useState(false);
+  const [apiError, setApiError] = useState(""); // New state for API error messages
 
   const validate = () => {
     const newErrors = {};
@@ -66,6 +67,11 @@ const SignUpPage = () => {
     if (Errors[e.target.name]) {
       setErrors({ ...Errors, [e.target.name]: "" });
     }
+    
+    // Clear API error when user starts typing
+    if (apiError) {
+      setApiError("");
+    }
   };
 
   const handleRegister = async (e) => {
@@ -78,6 +84,8 @@ const SignUpPage = () => {
     }
 
     setSubmitting(true);
+    setApiError(""); // Clear any previous API errors
+    
     try {
       const result = await registerUser(form);
       console.log("Registered", result);
@@ -96,7 +104,18 @@ const SignUpPage = () => {
       });
     } catch (error) {
       console.error(error);
-      alert("Failed to submit form", error);
+      // Set API error message
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        setApiError(error.response.data.message || "Server error occurred");
+      } else if (error.request) {
+        // The request was made but no response was received
+        setApiError("No response from server. Please check your connection.");
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        setApiError("Failed to submit form. Please try again.");
+      }
     } finally {
       setSubmitting(false); // always reset Submitting
     }
@@ -106,11 +125,51 @@ const SignUpPage = () => {
     <div className="min-h-screen bg-amber-50 py-4 sm:py-6 md:py-8 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8">
-          <div className="mb-6 sm:mb-8">
-            <h2 className="text-center text-2xl sm:text-3xl md:text-4xl font-semibold font-serif text-amber-900">
+          {/* Header with Title and Login Button */}
+          <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold font-serif text-amber-900">
               REGISTER HERE
             </h2>
+            
+            {/* Login Button */}
+            <button
+              onClick={() => navigate("/Login/Sign_In")}
+              className="w-full sm:w-auto px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition duration-200 ease-in-out transform hover:scale-105 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+            >
+              <svg 
+                className="w-5 h-5" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth="2" 
+                  d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" 
+                />
+              </svg>
+              Already have an account? Login
+            </button>
           </div>
+
+          {/* API Error Message Display */}
+          {apiError && (
+            <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <svg className="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm text-red-700 font-medium">
+                    {apiError}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
           
           <form onSubmit={handleRegister} className="space-y-4 sm:space-y-6">
             {/* Email Field */}
@@ -127,7 +186,9 @@ const SignUpPage = () => {
                   id="email"
                   name="email"
                   placeholder="Enter your email"
-                  className="w-full border rounded-lg px-3 sm:px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className={`w-full border rounded-lg px-3 sm:px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500 ${
+                    Errors.email ? "border-red-500" : "border-gray-300"
+                  }`}
                   value={form.email}
                   onChange={handleChange}
                   required
@@ -152,7 +213,9 @@ const SignUpPage = () => {
                   id="password"
                   name="password"
                   placeholder="Enter Your Password"
-                  className="w-full border rounded-lg px-3 sm:px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className={`w-full border rounded-lg px-3 sm:px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500 ${
+                    Errors.password ? "border-red-500" : "border-gray-300"
+                  }`}
                   value={form.password}
                   onChange={handleChange}
                   required
@@ -177,7 +240,9 @@ const SignUpPage = () => {
                   id="fullname"
                   name="fullname"
                   placeholder="Enter your full name"
-                  className="w-full border rounded-lg px-3 sm:px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className={`w-full border rounded-lg px-3 sm:px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500 ${
+                    Errors.fullname ? "border-red-500" : "border-gray-300"
+                  }`}
                   value={form.fullname}
                   onChange={handleChange}
                   required
@@ -202,7 +267,9 @@ const SignUpPage = () => {
                   name="bio"
                   placeholder="Enter your bio"
                   rows="3"
-                  className="w-full border rounded-lg px-3 sm:px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500 resize-y"
+                  className={`w-full border rounded-lg px-3 sm:px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500 resize-y ${
+                    Errors.bio ? "border-red-500" : "border-gray-300"
+                  }`}
                   value={form.bio}
                   onChange={handleChange}
                   required
@@ -227,7 +294,9 @@ const SignUpPage = () => {
                   id="skill"
                   name="skill"
                   placeholder="Enter your skill"
-                  className="w-full border rounded-lg px-3 sm:px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className={`w-full border rounded-lg px-3 sm:px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500 ${
+                    Errors.skill ? "border-red-500" : "border-gray-300"
+                  }`}
                   value={form.skill}
                   onChange={handleChange}
                   required
@@ -252,7 +321,9 @@ const SignUpPage = () => {
                   id="availability"
                   name="availability"
                   placeholder="Enter days of availability"
-                  className="w-full border rounded-lg px-3 sm:px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className={`w-full border rounded-lg px-3 sm:px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500 ${
+                    Errors.availability ? "border-red-500" : "border-gray-300"
+                  }`}
                   value={form.availability}
                   onChange={handleChange}
                   required
@@ -276,7 +347,9 @@ const SignUpPage = () => {
                   name="role"
                   value={form.role}
                   onChange={handleChange}
-                  className="w-full border rounded-lg px-3 sm:px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white"
+                  className={`w-full border rounded-lg px-3 sm:px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white ${
+                    Errors.role ? "border-red-500" : "border-gray-300"
+                  }`}
                   required
                 >
                   <option value="" disabled>Select a role</option>
@@ -300,6 +373,8 @@ const SignUpPage = () => {
                 {Submitting ? "Submitting..." : "REGISTER"}
               </button>
             </div>
+
+            {/* Alternative Login Link for Mobile */}
             <div className="text-center sm:hidden mt-4 pt-4 border-t border-gray-200">
               <p className="text-sm text-gray-600">
                 Already have an account?{" "}
