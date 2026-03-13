@@ -46,7 +46,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "https://mentorship-frontend-zkvn.onrender.com, 'https://mentorship-frontend-zkvn.onrender.com'") // React dev server // React dev server
+        policy.WithOrigins("http://localhost:5173", "https://mentorship-frontend-zkvn.onrender.com") // React dev server // React dev server
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -72,7 +72,6 @@ builder.Services.AddAuthorization(options =>
             return role != "Mentee";
         }));
 });
-
 
 
 builder.Services.AddSwaggerGen(options =>
@@ -135,8 +134,8 @@ if (app.Environment.IsDevelopment())
 }
 
 // app.UseHttpsRedirection();
-app.UseAuthentication();
 app.UseCors("AllowFrontend");
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
