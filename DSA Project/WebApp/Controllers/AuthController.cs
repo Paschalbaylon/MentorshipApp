@@ -126,7 +126,7 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
 
-    [HttpPost("register")]
+    [HttpPost("Create-User")]  // ✅ match what frontend calls
     public async Task<IActionResult> Register([FromBody] RegisterDto dto)
     {
         var result = await _authService.Register(dto);

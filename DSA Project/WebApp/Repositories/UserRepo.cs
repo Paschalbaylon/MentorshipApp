@@ -10,18 +10,17 @@ public class UserRepo(SiteDbContext dbContext)
 {
     private readonly SiteDbContext _siteDbContext = dbContext;
     private readonly DbSet<User> _Users = dbContext.Users;
-    public async Task<User> CreateUser(string email, string fullname, string bio, string skill, string availability, string passwordHash, string role)
+    public async Task<User> CreateUser(string email, string fullname, string bio, string skill, string availability, string password, string role)
     {
-        var user = new User(email, fullname, bio, skill, availability, passwordHash, role);
+        var user = new User(email, fullname, bio, skill, availability, password, role);
         _siteDbContext.Users.Add(user);
-        await _siteDbContext.SaveChangesAsync();
         return user;
     }
 
-    public async Task<User?> GetUserByEmail([FromBody] string email)
+    public async Task<User?> GetUserByEmail(string email)
     {
-        var user = await _siteDbContext.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
-        return user;
+        return await _siteDbContext.Users
+            .FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
     }
 
     public async Task<List<User>> GetAll()
