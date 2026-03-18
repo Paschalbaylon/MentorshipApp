@@ -13,6 +13,7 @@ public class SiteDbContext : DbContext
     public DbSet<MentorProfile> MentorProfiles { get; set; }
     public DbSet<MentorshipRequest> MentorshipRequests { get; set; }
     public DbSet<Session> Sessions { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -31,6 +32,18 @@ public class SiteDbContext : DbContext
             .WithOne(u => u.MenteeProfile)
             .HasForeignKey<MenteeProfile>(m => m.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // ✅ Configure RefreshToken <-> User one-to-many
+        modelBuilder.Entity<RefreshToken>()
+            .HasOne(rt => rt.User)
+            .WithMany(u => u.RefreshTokens)
+            .HasForeignKey(rt => rt.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // ✅ Index on Token for fast lookups
+        modelBuilder.Entity<RefreshToken>()
+            .HasIndex(rt => rt.Token)
+            .IsUnique();
     }
 
 

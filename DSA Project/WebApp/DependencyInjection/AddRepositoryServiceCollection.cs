@@ -13,6 +13,7 @@ public static class AddRepositoryServiceCollection
         services.AddScoped<UnitOfWork>();
         services.AddScoped<UserRepo>();
         services.AddScoped<SessionRepo>();
+        services.AddScoped<RefreshTokenRepo>();
 
         return services;
     }
