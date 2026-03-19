@@ -16,7 +16,7 @@ public class User
     public string PasswordHash { get; set; } = string.Empty;
     public string Role { get; set; } = string.Empty;
 
-    public User(string email, string fullname, string bio, string skill, string availability, string password, string role)
+    public User(string email, string fullname, string bio, string skill, string availability, string password, string role = "Mentee")
     {
         Email = email;
         FullName = fullname;

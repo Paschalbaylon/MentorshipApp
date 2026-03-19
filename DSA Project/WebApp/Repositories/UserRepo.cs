@@ -10,7 +10,7 @@ public class UserRepo(SiteDbContext dbContext)
 {
     private readonly SiteDbContext _siteDbContext = dbContext;
     private readonly DbSet<User> _Users = dbContext.Users;
-    public async Task<User> CreateUser(string email, string fullname, string bio, string skill, string availability, string password, string role)
+    public async Task<User> CreateUser(string email, string fullname, string bio, string skill, string availability, string password, string role = "Mentee")
     {
         var user = new User(email, fullname, bio, skill, availability, password, role);
         _siteDbContext.Users.Add(user);
