@@ -42,7 +42,7 @@ export default function MentorProfileForm() {
     <>
       <div className="bg-gray-400">
         <div className="mx-auto flex flex-col md:flex-row max-w-5xl ">
-          <div className=" p-6 bg-white rounded-xl max-w-[600px] md:mt-20">
+          <div className=" p-6 bg-white rounded-xl max-w-[600px] md:mt-15">
             <h2 className="text-xl font-bold mb-4">Create Mentor Profile</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <textarea
@@ -84,7 +84,7 @@ export default function MentorProfileForm() {
 
           {/* Update Mentor */}
 
-          <div className=" mx-auto flex justify-center items-center min-h-screen bg-gray-100 p-6 mt-4 md:mt-0 ">
+          <div className=" mx-auto flex justify-center items-center min-h-screen bg-gray-100 p-2 mt-4 md:mt-0 ">
             <div className=" bg-white rounded-2xl shadow-lg p-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
                 Update Mentor Profile
