@@ -40,7 +40,7 @@ export default function MentorProfileForm() {
 
   return (
     <>
-      <div className="mx-auto flex flex-col md:flex-row max-w-5xl">
+      <div className="mx-auto flex flex-col md:flex-row max-w-5xl bg-gray-100">
         <div className=" p-6 bg-white rounded-xl max-w-[600px] md:mt-20">
           <h2 className="text-xl font-bold mb-4">Create Mentor Profile</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
