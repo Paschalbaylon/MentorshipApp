@@ -62,7 +62,7 @@ const SignInPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validate form
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
@@ -71,7 +71,7 @@ const SignInPage = () => {
     }
 
     setIsSubmitting(true);
-    
+
     try {
       const response = await loginUser(credentials);
       console.log("Login Successfull", response);
@@ -80,6 +80,7 @@ const SignInPage = () => {
       // Store token or login status
       localStorage.setItem("token", response.token); // adjust based on API
       localStorage.setItem("role", userRole);
+      localStorage.setItem("user", JSON.stringify(response));
 
       alert("Login Successful");
 
@@ -109,12 +110,12 @@ const SignInPage = () => {
               LOGIN HERE
             </h2>
           </div>
-          
+
           <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
             {/* Email Field */}
             <div className="flex flex-col sm:flex-row sm:items-start gap-2">
-              <label 
-                htmlFor="email" 
+              <label
+                htmlFor="email"
                 className="text-base sm:text-lg md:text-xl font-semibold min-w-[100px] sm:text-right"
               >
                 Email:
@@ -132,15 +133,17 @@ const SignInPage = () => {
                   }`}
                 />
                 {errors.email && (
-                  <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.email}</p>
+                  <p className="text-red-500 text-xs sm:text-sm mt-1">
+                    {errors.email}
+                  </p>
                 )}
               </div>
             </div>
 
             {/* Password Field */}
             <div className="flex flex-col sm:flex-row sm:items-start gap-2">
-              <label 
-                htmlFor="password" 
+              <label
+                htmlFor="password"
                 className="text-base sm:text-lg md:text-xl font-semibold min-w-[100px] sm:text-right"
               >
                 Password:
@@ -158,7 +161,9 @@ const SignInPage = () => {
                   }`}
                 />
                 {errors.password && (
-                  <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.password}</p>
+                  <p className="text-red-500 text-xs sm:text-sm mt-1">
+                    {errors.password}
+                  </p>
                 )}
               </div>
             </div>

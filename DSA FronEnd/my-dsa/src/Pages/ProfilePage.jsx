@@ -24,8 +24,31 @@ const ProfilePage = () => {
     const fetchProfile = async () => {
       try {
         setLoading(true);
-        const data = await getMyProfile();
-        setProfile(data);
+
+        // Try API first, fall back to localStorage
+        try {
+          const data = await getMyProfile();
+          setProfile({
+            fullname: data.fullName || data.fullname || "",
+            bio: data.bio || "",
+            skill: data.skill || "",
+            email: data.email || "",
+            role: data.role || "",
+            availability: data.availability || "",
+          });
+        } catch {
+          // Fall back to stored user data
+          const stored = JSON.parse(localStorage.getItem("user") || "{}");
+          setProfile({
+            fullname: stored.fullName || stored.fullname || "",
+            bio: stored.bio || "",
+            skill: stored.skill || "",
+            email: stored.email || "",
+            role: stored.role || "",
+            availability: stored.availability || "",
+          });
+        }
+
         setError("");
       } catch (error) {
         console.error("Failed to fetch profile:", error);
