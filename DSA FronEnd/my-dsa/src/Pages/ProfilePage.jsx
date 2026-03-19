@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
+import { getMyProfile } from "../api/auth";
 
 // const ProfilePage = () => {
 //   const [profile, setProfile] = useState({
