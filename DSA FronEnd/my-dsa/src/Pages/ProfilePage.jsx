@@ -3,39 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import { getMyProfile } from "../api/auth";
 
-// const ProfilePage = () => {
-//   const [profile, setProfile] = useState({
-//     fullname: "",
-//     bio: "",
-//     skill: "",
-//     email: "",
-//     role: "",
-//     availability: "",
-//   });
-
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState("");
-//   const [showLogoutModal, setShowLogoutModal] = useState(false);
-//   const [loggingOut, setLoggingOut] = useState(false);
-
-//   useEffect(() => {
-//     const fetchProfile = async () => {
-//       try {
-//         setLoading(true);
-//         const response = await axiosInstance.get("/auth/me");
-//         setProfile(response.data);
-//         setError("");
-//       } catch (error) {
-//         console.error("Failed to fetch profile:", error);
-//         setError("Failed to load profile. Please try again.");
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchProfile();
-//   }, []);
-
 const ProfilePage = () => {
   const [profile, setProfile] = useState({
     fullname: "",
@@ -51,11 +18,13 @@ const ProfilePage = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         setLoading(true);
-        const data = await getMyProfile(); // use this instead of axiosInstance.get("/auth/me")
+        const data = await getMyProfile();
         setProfile(data);
         setError("");
       } catch (error) {
@@ -68,8 +37,6 @@ const ProfilePage = () => {
 
     fetchProfile();
   }, []);
-
-  const navigate = useNavigate();
 
   const handleLogout = async () => {
     setLoggingOut(true);
@@ -155,37 +122,48 @@ const ProfilePage = () => {
                 {profile.availability || "N/A"}
               </p>
             </div>
+          </div>
 
-            {showLogoutModal && (
-              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-sm mx-4">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                    Confirm Logout
-                  </h3>
-                  <p className="text-gray-500 text-sm mb-6">
-                    Are you sure you want to log out of your account?
-                  </p>
-                  <div className="flex gap-3">
-                    <button
-                      onClick={() => setShowLogoutModal(false)}
-                      className="flex-1 py-2 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={handleLogout}
-                      disabled={loggingOut}
-                      className="flex-1 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium transition disabled:opacity-50"
-                    >
-                      {loggingOut ? "Logging out..." : "Logout"}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
+          {/* Logout Button */}
+          <div className="mt-8">
+            <button
+              onClick={() => setShowLogoutModal(true)}
+              className="w-full py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold transition duration-200"
+            >
+              Logout
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Logout Confirmation Modal */}
+      {showLogoutModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-sm mx-4">
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              Confirm Logout
+            </h3>
+            <p className="text-gray-500 text-sm mb-6">
+              Are you sure you want to log out of your account?
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowLogoutModal(false)}
+                className="flex-1 py-2 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleLogout}
+                disabled={loggingOut}
+                className="flex-1 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium transition disabled:opacity-50"
+              >
+                {loggingOut ? "Logging out..." : "Logout"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
