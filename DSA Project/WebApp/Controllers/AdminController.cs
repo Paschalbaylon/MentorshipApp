@@ -10,7 +10,8 @@ using WebApp.Models;
 namespace WebApp.Controllers;
 
 [ApiController]
-[Route("admin")]
+// [Route("admin")]
+[Route("api/admin")]
 [Authorize(Roles = "Admin")]
 public class AdminController : BaseController<AdminController>
 {
