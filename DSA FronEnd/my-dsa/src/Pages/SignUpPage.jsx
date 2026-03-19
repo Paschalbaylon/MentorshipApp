@@ -12,7 +12,7 @@ const SignUpPage = () => {
     bio: "",
     skill: "",
     availability: "",
-    role: "",
+    // role: "",
   });
 
   const [Errors, setErrors] = useState({});
@@ -51,9 +51,9 @@ const SignUpPage = () => {
       newErrors.availability = "Enter your days of availability";
     }
 
-    if (!form.role) {
-      newErrors.role = "Role field is required";
-    }
+    // if (!form.role) {
+    //   newErrors.role = "Role field is required";
+    // }
 
     return newErrors;
   };
@@ -106,7 +106,7 @@ const SignUpPage = () => {
         bio: "",
         skill: "",
         availability: "",
-        role: "",
+        // role: "",
       });
       
       // Redirect after a short delay
@@ -378,7 +378,7 @@ const SignUpPage = () => {
             </div>
 
             {/* Role Field */}
-            <div className="flex flex-col sm:flex-row sm:items-start gap-2">
+            {/* <div className="flex flex-col sm:flex-row sm:items-start gap-2">
               <label 
                 htmlFor="role" 
                 className="text-base sm:text-lg md:text-xl font-semibold min-w-[100px] sm:text-right"
@@ -404,7 +404,7 @@ const SignUpPage = () => {
                   <p className="text-red-500 text-xs sm:text-sm mt-1">{Errors.role}</p>
                 )}
               </div>
-            </div>
+            </div> */}
 
             {/* Submit Button */}
             <div className="flex justify-center mt-6 sm:mt-8">
