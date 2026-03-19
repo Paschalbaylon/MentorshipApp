@@ -49,26 +49,26 @@ public class AuthController : ControllerBase
         return NoContent();
     }
 
-    // ⚠️ TEMPORARY - DELETE AFTER CREATING ADMIN
-    [HttpPost("seed-admin")]
-    public async Task<IActionResult> SeedAdmin()
-    {
+    // // ⚠️ TEMPORARY - DELETE AFTER CREATING ADMIN
+    // [HttpPost("seed-admin")]
+    // public async Task<IActionResult> SeedAdmin()
+    // {
 
-        var existing = _dbContext.Users.FirstOrDefault(u => u.Email == "admin@mentorship.com");
-        if (existing != null)
-            return BadRequest("Admin already exists");
+    //     var existing = _dbContext.Users.FirstOrDefault(u => u.Email == "admin@mentorship.com");
+    //     if (existing != null)
+    //         return BadRequest("Admin already exists");
 
-        var user = new User(
-            "admin@mentorship.com",
-            "Mentorship Admin",
-            "I am the Mentorship Admin",
-            "A Web Developer",
-            "Everyday",
-            "Admin1234",
-            "Admin"
-        );
-        _dbContext.Users.Add(user);
-        await _dbContext.SaveChangesAsync();
-        return Ok("Admin created successfully");
-    }
+    //     var user = new User(
+    //         "admin@mentorship.com",
+    //         "Mentorship Admin",
+    //         "I am the Mentorship Admin",
+    //         "A Web Developer",
+    //         "Everyday",
+    //         "Admin1234",
+    //         "Admin"
+    //     );
+    //     _dbContext.Users.Add(user);
+    //     await _dbContext.SaveChangesAsync();
+    //     return Ok("Admin created successfully");
+    // }
 }
