@@ -44,7 +44,7 @@ export default function MentorProfileForm() {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-700 to-blue-500 px-4 py-8">
       <div className="max-w-6xl mx-auto grid gap-6 md:grid-cols-2">
         {/* Create Profile */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+        <div className="bg-gray-200 rounded-2xl shadow-lg p-6 md:p-8">
           <h2 className="text-xl md:text-2xl font-bold mb-6 text-gray-800">
             Create Mentor Profile
           </h2>
@@ -98,7 +98,7 @@ export default function MentorProfileForm() {
         </div>
 
         {/* Update Profile */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+        <div className="bg-gray-200 rounded-2xl shadow-lg p-6 md:p-8">
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-6 text-center">
             Update Mentor Profile
           </h2>
