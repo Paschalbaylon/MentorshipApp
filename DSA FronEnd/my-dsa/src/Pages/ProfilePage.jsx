@@ -2,6 +2,39 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 
+// const ProfilePage = () => {
+//   const [profile, setProfile] = useState({
+//     fullname: "",
+//     bio: "",
+//     skill: "",
+//     email: "",
+//     role: "",
+//     availability: "",
+//   });
+
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState("");
+//   const [showLogoutModal, setShowLogoutModal] = useState(false);
+//   const [loggingOut, setLoggingOut] = useState(false);
+
+//   useEffect(() => {
+//     const fetchProfile = async () => {
+//       try {
+//         setLoading(true);
+//         const response = await axiosInstance.get("/auth/me");
+//         setProfile(response.data);
+//         setError("");
+//       } catch (error) {
+//         console.error("Failed to fetch profile:", error);
+//         setError("Failed to load profile. Please try again.");
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchProfile();
+//   }, []);
+
 const ProfilePage = () => {
   const [profile, setProfile] = useState({
     fullname: "",
@@ -21,8 +54,8 @@ const ProfilePage = () => {
     const fetchProfile = async () => {
       try {
         setLoading(true);
-        const response = await axiosInstance.get("/auth/me");
-        setProfile(response.data);
+        const data = await getMyProfile(); // use this instead of axiosInstance.get("/auth/me")
+        setProfile(data);
         setError("");
       } catch (error) {
         console.error("Failed to fetch profile:", error);
