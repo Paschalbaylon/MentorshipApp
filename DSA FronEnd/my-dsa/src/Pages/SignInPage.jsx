@@ -12,58 +12,54 @@ const SignInPage = () => {
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState(""); // "success" or "error"
+
+  const showMessage = (msg, type = "success") => {
+    setMessage(msg);
+    setMessageType(type);
+    if (type === "error") {
+      setTimeout(() => setMessage(""), 4000);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setCredentials((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    // Clear error for this field when user starts typing
+    setCredentials((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
+    if (message) setMessage("");
   };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role")?.toLowerCase();
     if (token && role) {
-      if (role === "mentee") {
-        navigate("/mentee");
-      } else if (role === "mentor") {
-        navigate("/mentor");
-      } else if (role === "admin") {
-        navigate("/admin");
-      }
+      if (role === "mentee") navigate("/mentee");
+      else if (role === "mentor") navigate("/mentor");
+      else if (role === "admin") navigate("/admin");
     }
   }, [navigate]);
 
   const validate = () => {
     const newErrors = {};
-
     if (!credentials.email) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(credentials.email)) {
       newErrors.email = "Invalid email format";
     }
-
     if (!credentials.password) {
       newErrors.password = "Password is required";
     } else if (credentials.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
     }
-
     return newErrors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate form
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -71,31 +67,27 @@ const SignInPage = () => {
     }
 
     setIsSubmitting(true);
+    setMessage("");
 
     try {
       const response = await loginUser(credentials);
-      console.log("Login Successfull", response);
 
       const userRole = response.role.toLowerCase();
-      // Store token or login status
-      localStorage.setItem("token", response.token); // adjust based on API
+      localStorage.setItem("token", response.token);
       localStorage.setItem("role", userRole);
       localStorage.setItem("user", JSON.stringify(response));
 
-      alert("Login Successful");
+      showMessage("Login successful! Redirecting...", "success");
 
-      if (userRole === "mentee") {
-        navigate("/mentee");
-      } else if (userRole === "mentor") {
-        navigate("/mentor");
-      } else if (userRole === "admin") {
-        navigate("/admin");
-      } else {
-        alert("Unknown role: " + userRole);
-      }
+      setTimeout(() => {
+        if (userRole === "mentee") navigate("/mentee");
+        else if (userRole === "mentor") navigate("/mentor");
+        else if (userRole === "admin") navigate("/admin");
+        else showMessage("Unknown role: " + userRole, "error");
+      }, 1000);
     } catch (error) {
       console.error("Login failed", error);
-      alert("Invalid email or password");
+      showMessage("Invalid email or password. Please try again.", "error");
     } finally {
       setIsSubmitting(false);
     }
@@ -110,6 +102,19 @@ const SignInPage = () => {
               LOGIN HERE
             </h2>
           </div>
+
+          {/* Message Banner */}
+          {message && (
+            <div
+              className={`mb-5 p-3 rounded-lg text-sm font-medium text-center ${
+                messageType === "error"
+                  ? "bg-red-50 border border-red-300 text-red-700"
+                  : "bg-green-50 border border-green-300 text-green-700"
+              }`}
+            >
+              {messageType === "success" ? "✅" : "❌"} {message}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
             {/* Email Field */}
