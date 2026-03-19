@@ -118,7 +118,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddDbContext<SiteDbContext>(options =>
-  options.UseSqlite("Data Source=WebApp.db"));
+  options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
