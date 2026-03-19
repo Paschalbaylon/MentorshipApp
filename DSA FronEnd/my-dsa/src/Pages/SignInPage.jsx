@@ -18,11 +18,12 @@ const SignInPage = () => {
   const showMessage = (msg, type = "success") => {
     setMessage(msg);
     setMessageType(type);
-    if (type === "error") {
-      setTimeout(() => setMessage(""), 4000);
-    }
-  };
 
+    // auto remove for both success & error
+    setTimeout(() => {
+      setMessage("");
+    }, 3000);
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCredentials((prev) => ({ ...prev, [name]: value }));
@@ -105,14 +106,17 @@ const SignInPage = () => {
 
           {/* Message Banner */}
           {message && (
-            <div
-              className={`mb-5 p-3 rounded-lg text-sm font-medium text-center ${
-                messageType === "error"
-                  ? "bg-red-50 border border-red-300 text-red-700"
-                  : "bg-green-50 border border-green-300 text-green-700"
-              }`}
-            >
-              {messageType === "success" ? "✅" : "❌"} {message}
+            <div className="fixed top-5 right-5 z-50 animate-slideIn">
+              <div
+                className={`px-5 py-3 rounded-lg shadow-lg text-sm font-medium flex items-center gap-2 ${
+                  messageType === "error"
+                    ? "bg-red-600 text-white"
+                    : "bg-green-600 text-white"
+                }`}
+              >
+                <span>{messageType === "success" ? "✅" : "❌"}</span>
+                <span>{message}</span>
+              </div>
             </div>
           )}
 

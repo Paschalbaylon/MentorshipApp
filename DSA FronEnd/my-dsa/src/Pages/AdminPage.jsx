@@ -27,55 +27,61 @@ const AdminPage = () => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 h-screen overflow-hidden">
-      <div className="mx-auto max-w-3xl">
-        <div className="mt-7 p-4 ">
-          <h2 className="text-center text-2xl font-bold font-serif text-amber-300">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 px-4 py-8">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="text-center">
+          <h2 className="text-3xl md:text-4xl font-bold font-serif text-amber-300">
             Welcome Admin
           </h2>
-          <h3 className="mt-10 text-gray-300 text-sm">
+
+          <p className="mt-3 text-gray-300 text-sm md:text-base">
             Logged in as{" "}
-            <span className="font-semibold text-gray-100">{userEmail}</span>
-          </h3>
-          <div className="mt-6">
-            <div>
-              <Link
-                to="/admin/profile"
-                className="bg-indigo-600 text-white font-semibold px-4 py-2 rounded-[8px] cursor-pointer hover:bg-indigo-700 transition duration-200 ease-in"
-              >
-                View Profile
-              </Link>
-            </div>
-            <div className="mt-8">
-              <div className="mt-4 ">
-                <Link
-                  to="/admin/manage-user"
-                  className="bg-emerald-600 text-white font-semibold px-4 py-3 rounded-[8px] cursor-pointer hover:bg-emerald-700 transition duration-200 ease-in block w-[400px] md:w-[600px]"
-                >
-                  📊 Manage Users
-                </Link>
-              </div>
-              <div className="mt-4">
-                <Link
-                  to="/admin/configure-platform"
-                  className="bg-amber-600 text-white font-semibold px-4 py-3 rounded-[8px] cursor-pointer hover:bg-amber-700 transition duration-200 ease-in block w-[400px] md:w-[600px]"
-                >
-                  🛠 Configure Platform
-                </Link>
-              </div>
-              <div className="mt-4">
-                <Link
-                  to="/admin/manage-session"
-                  className="bg-rose-600 text-white font-semibold px-4 py-3 rounded-[8px] cursor-pointer hover:bg-rose-700 transition duration-200 ease-in block w-[400px] md:w-[600px]"
-                >
-                  ✉ Manage Sessions
-                </Link>
-              </div>
-            </div>
+            <span className="font-semibold text-white break-all">
+              {userEmail}
+            </span>
+          </p>
+        </div>
+
+        {/* Main Card */}
+        <div className="mt-10 bg-gray-800/70 backdrop-blur-md rounded-2xl shadow-lg p-6 md:p-8">
+          {/* Profile */}
+          <div className="mb-8 text-center md:text-left">
+            <Link
+              to="/admin/profile"
+              className="inline-block bg-indigo-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-indigo-700 transition"
+            >
+              View Profile
+            </Link>
+          </div>
+
+          {/* Actions */}
+          <div className="grid gap-5 sm:grid-cols-2">
+            <Link
+              to="/admin/manage-user"
+              className="bg-emerald-600 text-white font-semibold p-5 rounded-xl text-center hover:bg-emerald-700 transition shadow"
+            >
+              📊 Manage Users
+            </Link>
+
+            <Link
+              to="/admin/configure-platform"
+              className="bg-amber-600 text-white font-semibold p-5 rounded-xl text-center hover:bg-amber-700 transition shadow"
+            >
+              🛠 Configure Platform
+            </Link>
+
+            <Link
+              to="/admin/manage-session"
+              className="bg-rose-600 text-white font-semibold p-5 rounded-xl text-center hover:bg-rose-700 transition shadow sm:col-span-2"
+            >
+              ✉ Manage Sessions
+            </Link>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
 export default AdminPage;
