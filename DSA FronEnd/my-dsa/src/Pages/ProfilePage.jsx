@@ -11,9 +11,11 @@ const ProfilePage = () => {
     role: "",
     availability: "",
   });
-  
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -36,16 +38,18 @@ const ProfilePage = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    const confirmLogout = window.confirm("Are you sure you want to logout?");
-    if (!confirmLogout) return;
-
+    setLoggingOut(true);
     try {
-      await axiosInstance.post("/auth/logout", {});
-      localStorage.removeItem("token");
-      navigate("/Login/Sign_In");
+      const refreshToken = localStorage.getItem("refreshToken");
+      await axiosInstance.post("/auth/logout", { token: refreshToken });
     } catch (error) {
       console.error("Logout failed", error);
-      alert("Logout failed. Please try again.");
+    } finally {
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      setLoggingOut(false);
+      setShowLogoutModal(false);
+      navigate("/Login/Sign_In");
     }
   };
 
@@ -73,23 +77,33 @@ const ProfilePage = () => {
 
           <div className="space-y-4">
             <div className="border-b border-gray-200 pb-3">
-              <label className="text-gray-500 text-sm block mb-1">Full Name</label>
-              <p className="text-lg font-medium text-gray-800">{profile.fullname || "N/A"}</p>
+              <label className="text-gray-500 text-sm block mb-1">
+                Full Name
+              </label>
+              <p className="text-lg font-medium text-gray-800">
+                {profile.fullname || "N/A"}
+              </p>
             </div>
 
             <div className="border-b border-gray-200 pb-3">
               <label className="text-gray-500 text-sm block mb-1">Bio</label>
-              <p className="text-gray-700 font-medium">{profile.bio || "N/A"}</p>
+              <p className="text-gray-700 font-medium">
+                {profile.bio || "N/A"}
+              </p>
             </div>
 
             <div className="border-b border-gray-200 pb-3">
               <label className="text-gray-500 text-sm block mb-1">Skills</label>
-              <p className="text-gray-700 font-medium">{profile.skill || "N/A"}</p>
+              <p className="text-gray-700 font-medium">
+                {profile.skill || "N/A"}
+              </p>
             </div>
 
             <div className="border-b border-gray-200 pb-3">
               <label className="text-gray-500 text-sm block mb-1">Email</label>
-              <p className="text-gray-700 font-medium">{profile.email || "N/A"}</p>
+              <p className="text-gray-700 font-medium">
+                {profile.email || "N/A"}
+              </p>
             </div>
 
             <div className="border-b border-gray-200 pb-3">
@@ -100,20 +114,41 @@ const ProfilePage = () => {
             </div>
 
             <div className="border-b border-gray-200 pb-3">
-              <label className="text-gray-500 text-sm block mb-1">Availability</label>
+              <label className="text-gray-500 text-sm block mb-1">
+                Availability
+              </label>
               <p className="text-gray-700 capitalize font-medium">
                 {profile.availability || "N/A"}
               </p>
             </div>
 
-            <div className="pt-6">
-              <button
-                onClick={handleLogout}
-                className="w-full bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition cursor-pointer font-medium text-lg"
-              >
-                Logout
-              </button>
-            </div>
+            {showLogoutModal && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-sm mx-4">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                    Confirm Logout
+                  </h3>
+                  <p className="text-gray-500 text-sm mb-6">
+                    Are you sure you want to log out of your account?
+                  </p>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setShowLogoutModal(false)}
+                      className="flex-1 py-2 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      disabled={loggingOut}
+                      className="flex-1 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium transition disabled:opacity-50"
+                    >
+                      {loggingOut ? "Logging out..." : "Logout"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
