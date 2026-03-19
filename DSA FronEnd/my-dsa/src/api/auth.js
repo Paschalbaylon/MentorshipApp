@@ -36,7 +36,7 @@ export async function loginUser(credentials) {
 export async function admin() {
   try {
     // const response = await axiosInstance.get("/../admin/User");
-    const response = await axiosInstance.get("/api/admin/User");
+    const response = await axiosInstance.get("/admin/User");
     return response.data;
   } catch (error) {
     console.error(

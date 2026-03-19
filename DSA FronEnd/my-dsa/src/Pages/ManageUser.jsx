@@ -71,7 +71,10 @@ const ManageUser = () => {
     }
     setUpdatingRole(true);
     try {
-      await axiosInstance.put(`/api/admin/User/${selectedUser.id}/role`, {
+      // await axiosInstance.put(`/api/admin/User/${selectedUser.id}/role`, {
+      //   role: selectedRole,
+      // });
+      await axiosInstance.put(`/admin/User/${selectedUser.id}/role`, {
         role: selectedRole,
       });
       showMessage(
