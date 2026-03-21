@@ -46,7 +46,7 @@ const MenteeSessionPage = () => {
     } catch (err) {
       console.error(
         "Error sending request:",
-        err.response?.data || err.message
+        err.response?.data || err.message,
       );
       setError(err.response?.data || "Failed to send mentorship request");
     }
@@ -84,6 +84,8 @@ const MenteeSessionPage = () => {
                   <span className="font-bold text-blue-800">{mentor.name}</span>{" "}
                   &nbsp;
                   <span className="font-semibold">{mentor.email}</span>
+                  &nbsp;
+                  <span className="font-semibold">{mentor.role}</span>
                 </li>
               ))}
             </ul>
