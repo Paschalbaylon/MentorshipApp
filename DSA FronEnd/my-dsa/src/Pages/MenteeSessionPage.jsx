@@ -86,7 +86,7 @@ const MenteeSessionPage = () => {
                   <span className="font-semibold">{mentor.email}</span>
                   &nbsp;
                   <span className="font-semibold gap-4">
-                    skill: {mentor.skill}
+                    skill: {mentor.Skill}
                   </span>
                 </li>
               ))}
