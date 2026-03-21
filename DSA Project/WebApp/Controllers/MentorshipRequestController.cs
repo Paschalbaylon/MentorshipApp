@@ -302,7 +302,7 @@ public class MentorshipRequestController : ControllerBase
                 Name = m.Users.FullName,
                 Email = m.Users.Email,
                 UserId = m.UserId,
-                Role = m.Users.Skill
+                Skill = m.Users.Skill
             })
             .ToListAsync();
 
