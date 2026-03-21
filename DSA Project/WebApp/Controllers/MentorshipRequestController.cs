@@ -301,7 +301,8 @@ public class MentorshipRequestController : ControllerBase
                 Id = m.Id,
                 Name = m.Users.FullName,
                 Email = m.Users.Email,
-                UserId = m.UserId
+                UserId = m.UserId,
+                Role = m.Users.Role
             })
             .ToListAsync();
 
